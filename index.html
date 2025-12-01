@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Bot</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <button id="chatbot-launcher" class="chatbot-launcher">
+    <span>🎓</span>
+  </button>
+
+  <div id="chatbot-container" class="chatbot-container">
+    <div class="chatbot-header">
+      <span>🎓 Study Bot</span>
+      <div class="header-buttons">
+        <button id="clear-btn" class="header-btn">Clear Chat</button>
+        <button id="close-chatbot" class="header-btn close-btn">&times;</button>
+      </div>
+    </div>
+
+    <div id="chat-body" class="chatbot-body"></div>
+
+    <div id="typing-indicator" class="typing-indicator" style="display: none;">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <div class="chatbot-footer">
+      <input type="text" id="user-input" placeholder="Type your question..." />
+      <button type="submit" id="send-btn">&#10148;</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
