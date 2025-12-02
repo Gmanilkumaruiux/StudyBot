@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
-  const launcher = document.getElementById("chatbot-launcher");
   const chatbotContainer = document.getElementById("chatbot-container");
   const closeBtn = document.getElementById("close-chatbot");
   const clearBtn = document.getElementById("clear-btn");
@@ -58,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
       replies: [
           { text: "🎨 Frontend", key: "frontend_roadmap" },
           { text: "⚙️ Backend", key: "Back_End_roadmap" },
-          { text: "🔙 Back", key: "course_roadmaps" }
+          { text: "🔙 Back", key: "web_development" }
       ]
     },
     frontend_roadmap: {
@@ -153,7 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // --- Core Functions ---
   const toggleChatbot = () => {
     chatbotContainer.classList.toggle("active");
-    launcher.classList.toggle("hidden");
   };
 
   const displayMessage = (sender, message) => {
@@ -217,7 +215,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // --- Event Listeners ---
-  launcher.addEventListener("click", toggleChatbot);
   closeBtn.addEventListener("click", toggleChatbot);
   sendBtn.addEventListener("click", handleSend);
   userInput.addEventListener("keyup", (e) => e.key === "Enter" && handleSend());
@@ -235,8 +232,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // Make the chatbot visible by default
+  chatbotContainer.classList.add("active");
+  
   // Initial greeting
   botReply("start");
 });
-
-
