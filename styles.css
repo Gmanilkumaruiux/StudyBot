@@ -4,38 +4,13 @@ body {
   margin: 0;
   padding: 0;
 }
-
-/* ================== CHATBOT LAUNCHER ================== */
-.chatbot-launcher {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  border: none;
-  background: orange;
-  color: #fff;
-  font-size: 24px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s;
-  z-index: 999;
-}
-.chatbot-launcher:hover {
-  transform: scale(1.1);
-}
-.chatbot-launcher.hidden {
-  display: none;
-}
-
 /* ================== CHATBOT CONTAINER ================== */
 .chatbot-container {
   position: fixed;
   bottom: 90px;
   right: 20px;
-  width: 340px;
-  height: 480px;
+  width: 300px;
+  height: 420px;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 5px 25px rgba(0, 0, 0, 0.25);
@@ -126,7 +101,7 @@ body {
 
 /* ##### THIS SECTION IS UPDATED ##### */
 .user-message .message-bubble {
-  background:orange; /* Changed from blue to orange */
+  background: orange;
   border: none;
   color: black;
   padding: 6px 12px;
@@ -146,7 +121,7 @@ body {
   margin: 8px 0;
 }
 .quick-reply-btn {
-  background: #34495e; /* Changed from blue to orange */
+  background: #34495e;
   border: none;
   color: white;
   padding: 6px 12px;
@@ -157,7 +132,7 @@ body {
   transition: background 0.2s;
 }
 .quick-reply-btn:hover {
-  background: #e69500; /* A nice darker orange for hover */
+  background: #e69500;
 }
 /* ##### END OF UPDATED SECTIONS ##### */
 
@@ -215,5 +190,3 @@ body {
   0%, 60%, 100% { transform: initial; }
   30% { transform: translateY(-6px); }
 }
-
-
