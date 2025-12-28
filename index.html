@@ -7,28 +7,29 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div class="chatbot-container active">
+<div class="chatbot-header">
+  <span>🎓 Study Bot</span>
+  <div class="header-actions">
+    <button id="clear-btn" class="clear-btn">Clear</button>
+    <button id="close-btn" class="close-btn">✕</button>
+  </div>
+</div>
 
-  <div id="chatbot-container" class="chatbot-container">
-    <div class="chatbot-header">
-      <span>🎓 Study Bot</span>
-      <div class="header-buttons">
-        <button id="clear-btn" class="header-btn">Clear Chat</button>
-        <button id="close-chatbot" class="header-btn close-btn">&times;</button>
-      </div>
-    </div>
 
     <div id="chat-body" class="chatbot-body"></div>
 
-    <div id="typing-indicator" class="typing-indicator" style="display: none;">
-      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    <div id="typing-indicator" class="typing-indicator">
+      <span></span><span></span><span></span>
     </div>
 
     <div class="chatbot-footer">
-      <input type="text" id="user-input" placeholder="Type your question..." />
-      <button type="submit" id="send-btn">&#10148;</button>
+      <input id="user-input" type="text" placeholder="Type a message..." />
+      <button id="send-btn">➤</button>
     </div>
   </div>
 
   <script src="script.js"></script>
 </body>
+
 </html>
