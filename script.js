@@ -1,240 +1,254 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // DOM Elements
-  const chatbotContainer = document.getElementById("chatbot-container");
-  const closeBtn = document.getElementById("close-chatbot");
-  const clearBtn = document.getElementById("clear-btn");
+
+  const chatbotContainer = document.querySelector(".chatbot-container");
   const chatBody = document.getElementById("chat-body");
   const userInput = document.getElementById("user-input");
   const sendBtn = document.getElementById("send-btn");
   const typingIndicator = document.getElementById("typing-indicator");
+  const clearBtn = document.getElementById("clear-btn");
+  const closeBtn = document.getElementById("close-btn");
 
-  // --- FAQ Data with NEW 'keywords' for search functionality ---
+  /* ================= DATA ================= */
+
   const faqData = {
     start: {
-      // ##### THIS SECTION IS UPDATED #####
-      keywords: ["hii", "hlo", "hey", "hello", "hi","heyy"],
-      response: "Hello! 👋 I'm your Study Bot. You can ask me about a topic or choose from the options below.",
+      keywords: ["hi", "hello", "hey"],
+      response: "Hi! I’m Study Bot. Choose what you want help with.",
       replies: [
         { text: "📚 Course Roadmaps", key: "course_roadmaps" },
-        { text: "🏆 Placement Guidance", key: "placement_guidance" }
+        { text: "🏆 Placement Guidance", key: "placement_guidance" },
+        { text: "🎯 Career Confusion", key: "career_guidance" }
       ]
     },
+
     fallback: {
-      response: "I'm sorry, I couldn't find information on that. Please try another term, or choose from the main options below.",
-      replies: [
-        { text: "📚 Course Roadmaps", key: "course_roadmaps" },
-        { text: "🏆 Placement Guidance", key: "placement_guidance" }
-      ]
+      response: "I didn’t understand that. Try asking about courses or placements."
     },
+
     course_roadmaps: {
-      keywords: ["course", "courses", "roadmap", "roadmaps", "learn", "study", "path"],
-      response: "Great! Which field are you interested in?",
+      keywords: ["course", "roadmap", "learn"],
+      response: "Select a domain to explore.",
       replies: [
-        { text: "🌐Web Development", key: "web_development" },
-        { text: "📊Data Science", key: "data_science_roadmap" },
-        { text: "🐍Python", key: "Python_roadmap"},
-        { text: "☕Java", key: "Java_roadmap"},
-        { text: "🗄️SQL", key: "SQL_roadmap"},
-        { text: "📈Data Analytics", key: "data_Analytics_roadmap"},
-        { text: "🔄DevOps", key: "DevOps_roadmap"},
-        { text: "☁️Back End", key: "Back_End_roadmap"},
-        { text: "🔙Back", key: "start" }
+        { text: "🌐 Web Development", key: "web_dev" },
+        { text: "🐍 Python", key: "python" },
+        { text: "📊 Data Science", key: "data_science" },
+        { text: "📈 Data Analytics", key: "data_analytics" },
+        { text: "☁️ Cloud & DevOps", key: "cloud_devops" },
+        { text: "🤖 AI & ML", key: "ai_ml" }
       ]
     },
+
+    web_dev: {
+      response:
+        "Web Development roadmap:\n\n" +
+        "1. HTML, CSS, JavaScript\n" +
+        "2. React\n" +
+        "3. Backend (Node / Django)\n" +
+        "4. Databases\n" +
+        "5. Projects + Hosting",
+      replies: [
+        { text: "Frontend Only", key: "frontend" },
+        { text: "Backend Only", key: "backend" }
+      ]
+    },
+
+    frontend: {
+      response:
+        "Frontend focus:\n\n" +
+        "• HTML, CSS, JavaScript\n" +
+        "• React + Hooks\n" +
+        "• Tailwind / Bootstrap\n" +
+        "• UI projects"
+    },
+
+    backend: {
+      response:
+        "Backend focus:\n\n" +
+        "• Node / Django / Spring Boot\n" +
+        "• REST APIs\n" +
+        "• Authentication\n" +
+        "• Databases"
+    },
+
+    python: {
+      response:
+        "Python roadmap:\n\n" +
+        "1. Basics + OOP\n" +
+        "2. Libraries (NumPy, Pandas)\n" +
+        "3. Specialization\n\n" +
+        "Good for beginners."
+    },
+
+    data_science: {
+      response:
+        "Data Science path:\n\n" +
+        "• Python\n" +
+        "• Statistics\n" +
+        "• Machine Learning\n" +
+        "• Kaggle projects"
+    },
+
+    data_analytics: {
+      response:
+        "Data Analytics path:\n\n" +
+        "• Excel + SQL\n" +
+        "• Power BI / Tableau\n" +
+        "• Basic Python"
+    },
+
+    cloud_devops: {
+      response:
+        "Cloud & DevOps:\n\n" +
+        "• Linux + Git\n" +
+        "• AWS / Azure\n" +
+        "• Docker + CI/CD"
+    },
+
+    ai_ml: {
+      response:
+        "AI & ML roadmap:\n\n" +
+        "• Python\n" +
+        "• Math (Stats + Linear Algebra)\n" +
+        "• ML Algorithms\n\n" +
+        "Math-heavy field."
+    },
+
     placement_guidance: {
-      keywords: ["placement", "placements", "job", "jobs", "career", "hiring"],
-      response: "Awesome! What do you need help with?",
+      keywords: ["placement", "job", "interview"],
+      response: "What do you need help with?",
       replies: [
-        { text: "📄 Resume Tips", key: "resume_tips" },
-        { text: "🎤 Interview Prep", key: "interview_prep" },
-        { text: "💡 Project Ideas", key: "project_ideas" },
-        { text: "🔙 Back", key: "start" }
+        { text: "📄 Resume", key: "resume" },
+        { text: "🎤 Interview", key: "interview" },
+        { text: "💡 Projects", key: "projects" }
       ]
     },
-    web_development: {
-      keywords: ["web development", "website", "fullstack", "full stack"],
-      response: "Web Development can be split into Frontend (what you see) and Backend (how it works). Which part are you curious about?",
-      replies: [
-          { text: "🎨 Frontend", key: "frontend_roadmap" },
-          { text: "⚙️ Backend", key: "Back_End_roadmap" },
-          { text: "🔙 Back", key: "web_development" }
-      ]
+
+    resume: {
+      response:
+        "Resume tips:\n\n" +
+        "• One page only\n" +
+        "• Projects first\n" +
+        "• GitHub link\n" +
+        "• Quantify impact"
     },
-    frontend_roadmap: {
-      keywords: ["frontend", "front-end", "ui", "ux", "user interface"],
-      response: "For Frontend, focus on: <ul><li>1. HTML, CSS, JavaScript (The core triad).</li><li>2. A modern framework like React or Vue.</li></ul>",
-      replies: [
-          { text: "⚙️ Backend", key: "Back_End_roadmap" },
-          { text: "🔙 Back", key: "web_development" }
-      ]
+
+    interview: {
+      response:
+        "Interview prep:\n\n" +
+        "• DSA basics\n" +
+        "• Explain projects\n" +
+        "• Be honest"
     },
-    data_science_roadmap: {
-        keywords: ["data science", "ds"],
-        response: `For Data Science, you should focus on:<ul><li><strong>1. Programming:</strong> Python (with Pandas, NumPy, Scikit-learn).</li><li><strong>2. Math:</strong> Statistics and Probability.</li><li><strong>3. Databases:</strong> SQL is a must-have.</li></ul>`,
-        replies: [
-            { text: "🐍 Python", key: "Python_roadmap" },
-            { text: "🔙 Back", key: "course_roadmaps" }
-        ]
+
+    projects: {
+      response:
+        "Project ideas:\n\n" +
+        "• Portfolio website\n" +
+        "• E-commerce app\n" +
+        "• Data analysis project"
     },
-    Python_roadmap: {
-      keywords: ["python", "py"],
-      response: "🐍 Python is a versatile language for web development, data science, and automation. A good roadmap is:<ul><li>1. Master the fundamentals (variables, loops, functions, data structures).</li><li>2. Learn Object-Oriented Programming (OOP) concepts.</li><li>3. Explore key libraries like Pandas for data or Django/Flask for web development.</li></ul>",
-      replies: [
-        { text: "📊 Data Science", key: "data_science_roadmap" },
-        { text: "🔙 Back", key: "course_roadmaps" }
-      ]
-    },
-    Java_roadmap: {
-      keywords: ["java"],
-      response: "☕ Java is a powerful choice for large-scale backend systems and Android apps. Focus on:<ul><li>1. Core Java concepts (OOP, data types, collections).</li><li>2. Data Structures and Algorithms.</li><li>3. Learn a framework like Spring/Spring Boot for building robust applications.</li></ul>",
-      replies: [
-        { text: "☁️ Back End", key: "Back_End_roadmap" },
-        { text: "🔙 Back", key: "course_roadmaps" }
-      ]
-    },
-    SQL_roadmap: {
-      keywords: ["sql", "database", "databases", "dbms"],
-      response: "🗄️ SQL is essential for managing and querying databases. Your learning path should be:<ul><li>1. Basic queries: SELECT, FROM, WHERE.</li><li>2. Intermediate: JOINs, GROUP BY, and aggregate functions.</li><li>3. Advanced: Window functions, stored procedures, and indexing.</li></ul>",
-      replies: [
-        { text: "📈 Data Analytics", key: "data_Analytics_roadmap" },
-        { text: "🔙 Back", key: "course_roadmaps" }
-      ]
-    },
-    data_Analytics_roadmap: {
-      keywords: ["data analytics", "analytics", "analysis"],
-      response: "📈 Data Analytics focuses on interpreting data to find insights. You'll need:<ul><li>1. Strong SQL skills to retrieve data.</li><li>2. Proficiency in Excel or Google Sheets.</li><li>3. A visualization tool like Tableau or Power BI.</li><li>4. Basic Python or R for statistical analysis.</li></ul>",
-      replies: [
-        { text: "🗄️ SQL", key: "SQL_roadmap" },
-        { text: "🔙 Back", key: "course_roadmaps" }
-      ]
-    },
-    DevOps_roadmap: {
-      keywords: ["devops"],
-      response: "🔄 DevOps bridges the gap between development and operations. Key skills include:<ul><li>1. Version Control: Git.</li><li>2. CI/CD: Jenkins or GitHub Actions.</li><li>3. Cloud Providers: AWS, Azure, or GCP.</li><li>4. Containers: Docker and Kubernetes.</li></ul>",
-      replies: [
-        { text: "☁️ Back End", key: "Back_End_roadmap" },
-        { text: "🔙 Back", key: "course_roadmaps" }
-      ]
-    },
-    Back_End_roadmap: {
-      keywords: ["backend", "back end", "server", "server-side"],
-      response: "☁️ The Back End is the engine of an application. A general roadmap is:<ul><li>1. Pick a language (Python, Java, Node.js).</li><li>2. Learn its main web framework (Django, Spring, Express).</li><li>3. Understand how to design and build APIs (RESTful APIs).</li><li>4. Master working with databases (SQL & NoSQL).</li></ul>",
-      replies: [
-        { text: "🔙 Back", key: "course_roadmaps" }
-      ]
-    },
-    resume_tips: {
-        keywords: ["resume", "cv", "bio-data"],
-        response: `To create a powerful tech resume:<ul><li><strong>Keep it to one page.</strong></li><li><strong>Use the STAR Method</strong> for project descriptions (Situation, Task, Action, Result).</li><li><strong>Highlight Skills & Projects</strong> and link your GitHub/Portfolio.</li></ul>`,
-        replies: [
-            { text: "🎤 Interview Prep", key: "interview_prep" },
-            { text: "🔙 Back", key: "placement_guidance" }
-        ]
-    },
-    interview_prep: {
-        keywords: ["interview", "interviews", "prep", "preparation"],
-        response: `Interview prep has two parts:<ul><li><strong>Technical Prep:</strong> Focus on Data Structures & Algorithms on platforms like LeetCode.</li><li><strong>Behavioral Prep:</strong> Be ready to talk about your projects and teamwork.</li></ul>`,
-        replies: [
-            { text: "💡 Project Ideas", key: "project_ideas" },
-            { text: "🔙 Back", key: "placement_guidance" }
-        ]
-    },
-    project_ideas: {
-        keywords: ["project", "projects", "ideas", "portfolio"],
-        response: `Projects prove your skills. Some ideas:<ul><li><strong>Web Dev:</strong> Portfolio Website, Weather App, E-commerce site.</li><li><strong>Data Science:</strong> Analyze a dataset from Kaggle.</li></ul>`,
-        replies: [
-            { text: "📄 Resume Tips", key: "resume_tips" },
-            { text: "🔙 Back", key: "placement_guidance" }
-        ]
+
+    career_guidance: {
+      response:
+        "Career confusion is normal.\n\n" +
+        "Ask yourself:\n" +
+        "• Logic or design?\n" +
+        "• Math-heavy or creative?\n" +
+        "• Long-term learning?"
     }
   };
 
-  // --- Core Functions ---
-  const toggleChatbot = () => {
-    chatbotContainer.classList.toggle("active");
+  /* ================= FUNCTIONS ================= */
+
+  const saveChat = () => {
+    localStorage.setItem("studybot_chat", chatBody.innerHTML);
   };
 
-  const displayMessage = (sender, message) => {
-    const msgContainer = document.createElement("div");
-    msgContainer.classList.add("message-container", `${sender}-message`);
-    const msgBubble = document.createElement("div");
-    msgBubble.classList.add("message-bubble");
-    msgBubble.innerHTML = message;
-    msgContainer.appendChild(msgBubble);
-    chatBody.appendChild(msgContainer);
-    chatBody.scrollTop = chatBody.scrollHeight;
+  const loadChat = () => {
+    const saved = localStorage.getItem("studybot_chat");
+    if (saved) chatBody.innerHTML = saved;
   };
 
-  const displayQuickReplies = (replies) => {
-    const container = document.createElement("div");
-    container.classList.add("quick-replies");
-    replies.forEach(r => {
-      const btn = document.createElement("button");
-      btn.classList.add("quick-reply-btn");
-      btn.textContent = r.text;
-      btn.dataset.key = r.key;
-      container.appendChild(btn);
-    });
-    chatBody.appendChild(container);
+  const addMessage = (sender, text) => {
+    const msg = document.createElement("div");
+    msg.className = `message-container ${sender}-message`;
+
+    const bubble = document.createElement("div");
+    bubble.className = "message-bubble";
+    bubble.innerHTML = text.replace(/\n/g, "<br>");
+
+    msg.appendChild(bubble);
+    chatBody.appendChild(msg);
     chatBody.scrollTop = chatBody.scrollHeight;
+    saveChat();
   };
 
   const botReply = (key) => {
-    const choice = faqData[key];
     typingIndicator.style.display = "flex";
+
     setTimeout(() => {
       typingIndicator.style.display = "none";
-      displayMessage("bot", choice.response);
-      if (choice.replies) displayQuickReplies(choice.replies);
-    }, 800);
+
+      const data = faqData[key];
+      addMessage("bot", data.response);
+
+      if (data.replies) {
+        const wrap = document.createElement("div");
+        wrap.className = "quick-replies";
+
+        data.replies.forEach(r => {
+          const btn = document.createElement("button");
+          btn.textContent = r.text;
+          btn.onclick = () => {
+            addMessage("user", r.text);
+            botReply(r.key);
+          };
+          wrap.appendChild(btn);
+        });
+
+        chatBody.appendChild(wrap);
+      }
+    }, 600);
   };
 
   const handleSend = () => {
     const text = userInput.value.trim();
     if (!text) return;
-    displayMessage("user", text);
+
+    addMessage("user", text);
     userInput.value = "";
 
-    const lowerText = text.toLowerCase();
-    let matchedKey = null;
+    const lower = text.toLowerCase();
+    let matched = null;
 
     for (const key in faqData) {
-      if (faqData[key].keywords) {
-        if (faqData[key].keywords.some(kw => lowerText.includes(kw))) {
-          matchedKey = key;
-          break; 
-        }
+      if (faqData[key].keywords?.some(k => lower.includes(k))) {
+        matched = key;
+        break;
       }
     }
-    
-    if (matchedKey) {
-      botReply(matchedKey);
-    } else {
-      botReply("fallback");
-    }
+
+    botReply(matched || "fallback");
   };
 
-  // --- Event Listeners ---
-  closeBtn.addEventListener("click", toggleChatbot);
-  sendBtn.addEventListener("click", handleSend);
-  userInput.addEventListener("keyup", (e) => e.key === "Enter" && handleSend());
-  clearBtn.addEventListener("click", () => {
-      chatBody.innerHTML = "";
-      botReply("start"); // Start a new conversation
-  });
+  /* ================= EVENTS ================= */
 
-  chatBody.addEventListener("click", (e) => {
-    if (e.target.classList.contains("quick-reply-btn")) {
-      const key = e.target.dataset.key;
-      displayMessage("user", e.target.textContent);
-      document.querySelectorAll(".quick-replies").forEach(el => el.remove());
-      botReply(key);
-    }
-  });
+  sendBtn.onclick = handleSend;
+  userInput.addEventListener("keydown", e => e.key === "Enter" && handleSend());
 
-  // Make the chatbot visible by default
-  chatbotContainer.classList.add("active");
-  
-  // Initial greeting
-  botReply("start");
+  clearBtn.onclick = () => {
+    chatBody.innerHTML = "";
+    localStorage.removeItem("studybot_chat");
+    botReply("start");
+  };
+
+  closeBtn.onclick = () => {
+    chatbotContainer.classList.toggle("active");
+  };
+
+  /* ================= INIT ================= */
+
+  loadChat();
+  if (!chatBody.innerHTML) botReply("start");
+
 });
